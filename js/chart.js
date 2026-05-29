@@ -1,3 +1,4 @@
+clearTimeout(window.__echartsLoadTimeout);
 /**
  * 智财通 - ECharts 图表脚本
  * 依赖：ECharts 5.4.3 CDN、finance.json 数据文件
@@ -7,18 +8,43 @@ var chartInstances = {};
 
 /** 初始化所有图表 */
 async function initCharts() {
-  // 加载数据
-  var records = [];
-  try {
-    var resp = await fetch('data/finance.json');
-    records = await resp.json();
-  } catch (e) {
-    console.error('无法加载财务数据:', e);
-    // 尝试从 localStorage 读取
-    var stored = localStorage.getItem('zhichaitong_records');
-    if (stored) {
-      records = JSON.parse(stored);
+  // 确保ECharts已加载
+  if (typeof echarts === 'undefined') {
+    console.warn('ECharts 未加载，等待...');
+    var retryCount = 0;
+    while (typeof echarts === 'undefined' && retryCount < 20) {
+      await new Promise(function(r) { setTimeout(r, 300); });
+      retryCount++;
     }
+    if (typeof echarts === 'undefined') {
+      console.error('ECharts 加载失败');
+      document.querySelectorAll('.chart-box').forEach(function(el) {
+        el.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#ea4335;font-size:0.9rem;text-align:center;padding:20px;">⚠️ 图表组件加载失败<br><span style="font-size:0.8rem;color:#999;">请检查网络后刷新页面</span></div>';
+      });
+      return;
+    }
+  }
+
+  // 加载数据：优先 localStorage → 再 fetch
+  var records = [];
+  var stored = localStorage.getItem('zhichaitong_records');
+  if (stored) {
+    try { records = JSON.parse(stored); } catch(e) {}
+  }
+  if (records.length === 0) {
+    try {
+      var resp = await fetch('data/finance.json');
+      if (resp.ok) records = await resp.json();
+    } catch (e) {
+      console.error('无法加载财务数据:', e);
+    }
+  }
+  if (records.length === 0) {
+    console.warn('无数据显示空状态');
+    document.querySelectorAll('.chart-box').forEach(function(el) {
+      el.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;font-size:0.9rem;text-align:center;padding:20px;">📝 暂无数据<br><span style="font-size:0.8rem;color:#bbb;">请先添加收支记录</span></div>';
+    });
+    return;
   }
 
   // 初始化三个图表

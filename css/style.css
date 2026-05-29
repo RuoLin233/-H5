@@ -2163,3 +2163,280 @@ input, textarea, select, [contenteditable] {
   user-select: text;
 }
 
+
+
+/* ============================================
+   H5 移动端深度UI优化 v2
+   ============================================ */
+
+/* 页脚在移动端大幅简化或隐藏（有底部导航就够了）*/
+@media (max-width: 767px) {
+  .footer {
+    padding: 20px 16px 80px !important; /* 底部留出导航栏空间 */
+  }
+
+  .footer__grid {
+    gap: 16px !important;
+  }
+
+  .footer__desc,
+  .footer__title:nth-child(n+2),
+  .footer__links:nth-child(n+2) {
+    display: none !important;
+  }
+
+  /* 图表容器优化 */
+  .chart-container {
+    padding: 12px !important;
+    border-radius: 12px !important;
+  }
+
+  /* Tab按钮在移动端更紧凑 */
+  .tab-btn {
+    padding: 8px 14px !important;
+    font-size: 0.85rem !important;
+  }
+
+  /* 报表页卡片优化 */
+  .report-cards {
+    gap: 10px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .report-card {
+    padding: 14px !important;
+  }
+
+  .report-card__value {
+    font-size: 1.3rem !important;
+  }
+
+  /* 数据表格横向滚动优化 */
+  .table-wrapper {
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .data-table {
+    min-width: 500px !important;
+  }
+
+  .data-table th,
+  .data-table td {
+    padding: 10px 8px !important;
+    font-size: 0.82rem !important;
+  }
+
+  /* 页面标题区域紧凑化 */
+  .page-title {
+    font-size: 1.4rem !important;
+    margin-bottom: 4px !important;
+  }
+
+  .page-subtitle {
+    font-size: 0.85rem !important;
+    margin-bottom: 16px !important;
+  }
+
+  /* 卡片间距优化 */
+  .card {
+    margin-bottom: 14px !important;
+    border-radius: 12px !important;
+  }
+
+  .card__body {
+    padding: 16px !important;
+  }
+
+  /* 按钮组在移动端纵向排列 */
+  .chart-tabs {
+    flex-wrap: wrap !important;
+    justify-content: center !important;
+    gap: 6px !important;
+  }
+
+  /* 图表高度自适应 */
+  .chart-box {
+    height: 280px !important;
+  }
+
+  .report-chart-box {
+    height: 280px !important;
+  }
+
+  /* 导航栏在移动端固定定位 */
+  .navbar {
+    position: fixed !important;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 4000 !important;
+  }
+
+  /* 主内容区给导航栏留空间 */
+  main {
+    padding-top: 64px !important;
+  }
+
+  /* Hero区域在移动端隐藏背景图效果 */
+  .hero {
+    min-height: auto !important;
+    padding: 30px 16px !important;
+  }
+
+  .hero::after {
+    display: none !important;
+  }
+
+  /* 首页概览卡片网格 */
+  .home-stats {
+    gap: 10px !important;
+    margin-top: -16px !important;
+  }
+
+  .home-stat-card {
+    padding: 14px 10px !important;
+  }
+
+  .home-stat-card__value {
+    font-size: 1.15rem !important;
+  }
+
+  /* 小贴士区域 */
+  #daily-tip-home,
+  #daily-tip-chart,
+  #daily-tip-report {
+    margin-top: 16px !important;
+    margin-bottom: 12px !important;
+  }
+
+  .daily-tip {
+    padding: 12px 14px !important;
+    border-radius: 10px !important;
+    font-size: 0.84rem !important;
+  }
+
+  /* 快捷操作按钮组 */
+  main > .page-section > div[style*="text-align: center"] {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 10px !important;
+    align-items: stretch !important;
+  }
+
+  main > .page-section > div[style*="text-align: center"] .btn {
+    width: 100% !important;
+    text-align: center !important;
+    justify-content: center !important;
+  }
+
+  /* 月度选择器居中 */
+  div[style*="display: flex"][style*="justify-content: center"] {
+    max-width: 100% !important;
+  }
+
+  /* 关于页面移动端优化 */
+  .about-hero {
+    padding: 24px 16px !important;
+  }
+
+  .about-team {
+    grid-template-columns: 1fr !important;
+    gap: 12px !important;
+  }
+
+  .about-team__member {
+    text-align: center !important;
+  }
+
+  /* 记录列表项 */
+  .record-item {
+    padding: 12px !important;
+  }
+
+  /* 预算卡片 */
+  .budget-category-item {
+    padding: 12px !important;
+  }
+
+  /* Modal 弹窗移动端优化 */
+  .modal__dialog {
+    max-height: 85vh !important;
+    margin: 40px auto !important;
+    width: 92% !important;
+  }
+
+  /* Toast通知 */
+  .toast {
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    bottom: 80px !important;
+    width: auto !important;
+    max-width: 80% !important;
+  }
+
+  /* 数据解读卡片文字缩小 */
+  .card__body p[style*="margin-bottom"] {
+    font-size: 0.83rem !important;
+    line-height: 1.6 !important;
+    margin-bottom: 8px !important;
+  }
+}
+
+/* 超小屏适配（iPhone SE等）*/
+@media (max-width: 374px) {
+  .tab-btn {
+    padding: 6px 10px !important;
+    font-size: 0.78rem !important;
+  }
+
+  .mobile-nav__label {
+    font-size: 0.58rem !important;
+  }
+
+  .mobile-nav__icon {
+    font-size: 1.1rem !important;
+  }
+
+  .chart-box {
+    height: 240px !important;
+  }
+
+  .report-chart-box {
+    height: 240px !important;
+  }
+
+  .page-title {
+    font-size: 1.25rem !important;
+  }
+}
+
+/* 横屏模式提醒 */
+@media (max-width: 767px) and (orientation: landscape) {
+  .mobile-nav {
+    position: fixed !important;
+    bottom: auto !important;
+    top: 0 !important;
+    padding: 4px !important;
+    height: 44px !important;
+    align-items: center !important;
+  }
+
+  .mobile-nav__item {
+    padding: 2px 4px !important;
+    flex-direction: row !important;
+    gap: 3px !important;
+  }
+
+  .mobile-nav__icon {
+    font-size: 1rem !important;
+  }
+
+  .mobile-nav__label {
+    font-size: 0.65rem !important;
+  }
+
+  main {
+    padding-top: 108px !important; /* 64(nav) + 44(mobile-nav) */
+  }
+}

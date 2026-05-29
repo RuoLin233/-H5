@@ -11,7 +11,7 @@
   <link rel="apple-touch-icon" href="images/logo.jpg">
   <title>财务数据分析 - 智财通</title>
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
   <!-- 导航栏 -->
@@ -128,7 +128,7 @@
   </footer>
 
   <!-- ECharts CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
   <script src="js/main.js"></script>
   <script>
     // 优化8: 图表页小贴士
@@ -136,6 +136,18 @@
       showDailyTip('#daily-tip-chart');
     });
   </script>
+  
+<script>
+// 兜底：ECharts CDN加载失败时显示提示
+window.__echartsLoadTimeout = setTimeout(function() {
+  if (typeof echarts === 'undefined') {
+    document.querySelectorAll('.chart-box').forEach(function(el) {
+      el.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;font-size:0.9rem;text-align:center;padding:20px;"><div>📊 图表资源加载中...<br><span style="font-size:0.8rem;color:#bbb;">请稍候或刷新页面</span></div></div>';
+    });
+  }
+}, 5000);
+</script>
+
   <script src="js/chart.js"></script>
 
   <!-- 注册 Service Worker -->

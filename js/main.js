@@ -932,8 +932,8 @@ if (isMobile) {
 
 // --- 移动端底部导航栏 ---
 (function() {
-  // 仅移动端显示
-  if (!/Mobi|Android|iPhone/i.test(navigator.userAgent)) return;
+  // 使用屏幕宽度检测，兼容所有设备（包括PC浏览器手机模式）
+  if (window.innerWidth > 767) return;
 
   var pages = [
     { icon: '🏠', label: '首页', href: 'index.html' },

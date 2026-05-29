@@ -11,7 +11,7 @@
   <link rel="apple-touch-icon" href="images/logo.jpg">
   <title>财务报表 - 智财通</title>
   <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
   <!-- 导航栏 -->
@@ -146,7 +146,7 @@
   </footer>
 
   <!-- ECharts CDN -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
   <script src="js/main.js"></script>
   <script>
     // 优化8: 报表页小贴士
@@ -175,7 +175,8 @@
     }
 
     // ===== 初始化报表页 =====
-    async function initReportPage() {
+    clearTimeout(window.__echartsLoadTimeout);
+async function initReportPage() {
       await initDefaultRecords();
       renderReport();
     }
