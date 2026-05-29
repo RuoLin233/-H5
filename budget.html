@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1a73e8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="智财通">
+  <link rel="apple-touch-icon" href="images/logo.jpg">
+  <title>预算管理 - 智财通</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__logo">
+        <img src="images/logo.jpg" alt="智财通" class="navbar__logo-img">
+        <span class="navbar__logo-text">智财通</span>
+      </a>
+      <input type="checkbox" id="nav-toggle" class="navbar__toggle-checkbox">
+      <label for="nav-toggle" class="navbar__hamburger">
+        <span class="navbar__hamburger-line"></span>
+        <span class="navbar__hamburger-line"></span>
+        <span class="navbar__hamburger-line"></span>
+      </label>
+      <div class="navbar__links">
+        <a href="index.html" class="navbar__link">首页</a>
+        <a href="record.html" class="navbar__link">记账</a>
+        <a href="budget.html" class="navbar__link navbar__link--active">预算</a>
+        <a href="chart.html" class="navbar__link">图表</a>
+        <a href="report.html" class="navbar__link">报表</a>
+        <a href="about.html" class="navbar__link">关于</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主内容 -->
+  <main>
+    <div class="page-section">
+      <h1 class="page-title">预算管理</h1>
+      <p class="page-subtitle">设定预算目标，掌控每一分钱的去向</p>
+
+      <!-- 月度预算总览 -->
+      <div class="card" style="margin-bottom: 24px;" id="budget-overview">
+        <div class="card__body">
+          <h2 class="card__title">📊 本月预算总览</h2>
+          <div style="display: flex; align-items: center; gap: 24px; margin-top: 16px; flex-wrap: wrap;">
+            <!-- 环形进度 -->
+            <div style="position: relative; width: 130px; height: 130px; flex-shrink: 0;">
+              <canvas id="budget-ring" width="130" height="130"></canvas>
+              <div style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); text-align: center;">
+                <div style="font-size: 1.4rem; font-weight: 800;" id="budget-percent-text">0%</div>
+                <div style="font-size: 0.7rem; color: var(--color-text-secondary);">已使用</div>
+              </div>
+            </div>
+            <!-- 金额信息 -->
+            <div style="flex: 1; min-width: 200px;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span style="color: var(--color-text-secondary);">预算总额</span>
+                <span style="font-weight: 700;" id="budget-total">¥0.00</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                <span style="color: var(--color-text-secondary);">已支出</span>
+                <span style="font-weight: 700; color: var(--color-warning);" id="budget-spent">¥0.00</span>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 12px;">
+                <span style="color: var(--color-text-secondary);">剩余</span>
+                <span style="font-weight: 700; color: var(--color-secondary);" id="budget-remaining">¥0.00</span>
+              </div>
+              <div class="progress-bar" style="height: 10px;">
+                <div class="progress-bar__fill" id="budget-progress-bar" style="width: 0%;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 预算明细表格 -->
+      <div class="card">
+        <div class="card__body">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; flex-wrap: wrap; gap: 12px;">
+            <h2 class="card__title" style="margin-bottom: 0;">📋 分类预算明细</h2>
+            <button class="btn btn--primary btn--sm" onclick="openBudgetModal()">
+              <i class="fa fa-cog"></i> 设置预算
+            </button>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="data-table" id="budget-table">
+              <thead>
+                <tr>
+                  <th>分类</th>
+                  <th>预算金额</th>
+                  <th>已支出</th>
+                  <th>剩余</th>
+                  <th>进度</th>
+                  <th>状态</th>
+                </tr>
+              </thead>
+              <tbody id="budget-table-body">
+                <!-- 由 JS 动态生成 -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- 预算提示 -->
+      <div class="card" style="margin-top: 24px;">
+        <div class="card__body">
+          <h3 class="card__title">💡 预算小贴士</h3>
+          <ul style="color: var(--color-text-secondary); font-size: 0.9rem; line-height: 2; margin-top: 12px; padding-left: 20px;">
+            <li>建议将收入的 50% 用于必要支出（住房、餐饮），30% 用于储蓄，20% 用于娱乐。</li>
+            <li>当某分类使用超过 80% 时，系统会发出预警，请注意控制支出。</li>
+            <li>点击"设置预算"按钮可自定义各类别的预算金额。</li>
+            <li>预算数据保存在本地浏览器中，清空浏览器数据会丢失预算设置。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 设置预算模态框 -->
+  <div class="modal-overlay" id="budget-modal">
+    <div class="modal">
+      <div class="modal__header">
+        <h3 class="modal__title">设置分类预算</h3>
+        <button class="modal__close" onclick="closeBudgetModal()">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+      <div class="modal__body">
+        <p style="font-size: 0.85rem; color: var(--color-text-secondary); margin-bottom: 16px;">
+          设置各分类的月度预算金额（元）。留空表示该分类不设预算。
+        </p>
+        <!-- 总额输入 -->
+        <div class="form-group">
+          <label class="form-label">💎 预算总额（元）</label>
+          <input type="number" class="form-input" id="budget-total-input" placeholder="输入总预算额，留空则按各分类填写的金额计算" min="0" step="0.01">
+          <small style="color: var(--color-text-secondary); font-size: 0.78rem; margin-top: 4px; display: block;">
+            💡 规则说明：仅填总额→均分到所有分类；填总额+部分分类→剩余均分到留空项；只填单项→仅该项有预算；留空=无预算
+          </small>
+        </div>
+        <hr style="border: none; border-top: 1px solid var(--color-border); margin: 16px 0;">
+        <!-- 各分类预算 -->
+        <div id="budget-modal-fields">
+          <!-- 由 JS 动态生成 -->
+        </div>
+      </div>
+      <div class="modal__footer">
+        <button class="btn btn--danger btn--sm" onclick="resetBudgetSettings()" style="margin-right: auto;">
+          <i class="fa fa-refresh"></i> 一键重置
+        </button>
+        <button class="btn" style="border: 1px solid var(--color-border);" onclick="closeBudgetModal()">取消</button>
+        <button class="btn btn--primary" onclick="saveBudgetSettings()">保存设置</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">💰 智财通</p>
+          <p class="footer__desc">智能个人财务管理平台，让每一笔收支都有迹可循。</p>
+        </div>
+        <div>
+          <p class="footer__title">快速链接</p>
+          <div class="footer__links">
+            <a href="index.html" class="footer__link">首页</a>
+            <a href="record.html" class="footer__link">记账</a>
+            <a href="budget.html" class="footer__link">预算</a>
+            <a href="chart.html" class="footer__link">图表</a>
+            <a href="report.html" class="footer__link">报表</a>
+          </div>
+        </div>
+        <div>
+          <p class="footer__title">联系方式</p>
+          <div class="footer__links">
+            <span class="footer__link">📧 zhicaitong@example.com</span>
+            <span class="footer__link">📞 400-888-XXXX</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        © 2026 智财通 | AI赋能新生态 期末课程项目 | 保留所有权利
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // ===== 初始化预算页面 =====
+    async function initBudgetPage() {
+      await initDefaultRecords();
+      await initDefaultBudget();
+      renderBudgetOverview();
+      renderBudgetTable();
+
+      // 优化6: 预算超支浮动提醒
+      checkBudgetAlerts();
+    }
+
+    // ===== 渲染预算总览 =====
+    function renderBudgetOverview() {
+      var info = getCurrentMonthBudget();
+
+      document.getElementById('budget-total').textContent = '¥' + info.budget.toFixed(2);
+      document.getElementById('budget-spent').textContent = '¥' + info.actual.toFixed(2);
+      document.getElementById('budget-remaining').textContent = '¥' + info.remaining.toFixed(2);
+
+      var percent = Math.min(info.percent, 100);
+      document.getElementById('budget-percent-text').textContent = percent + '%';
+
+      var bar = document.getElementById('budget-progress-bar');
+      bar.style.width = percent + '%';
+      bar.className = 'progress-bar__fill';
+      if (percent >= 100) bar.classList.add('progress-bar__fill--danger');
+      else if (percent >= 80) bar.classList.add('progress-bar__fill--warning');
+
+      // 绘制环形图
+      drawBudgetRing(percent);
+    }
+
+    // ===== 绘制环形进度 =====
+    function drawBudgetRing(percent) {
+      var canvas = document.getElementById('budget-ring');
+      var ctx = canvas.getContext('2d');
+      var size = canvas.width;
+      var lineWidth = 12;
+      var radius = (size - lineWidth) / 2;
+      var center = size / 2;
+
+      ctx.clearRect(0, 0, size, size);
+
+      // 背景圆
+      ctx.beginPath();
+      ctx.arc(center, center, radius, 0, Math.PI * 2);
+      ctx.strokeStyle = '#e8eaed';
+      ctx.lineWidth = lineWidth;
+      ctx.stroke();
+
+      // 进度弧
+      var startAngle = -Math.PI / 2;
+      var endAngle = startAngle + (Math.PI * 2 * Math.min(percent, 100)) / 100;
+      ctx.beginPath();
+      ctx.arc(center, center, radius, startAngle, endAngle);
+      var gradient = ctx.createLinearGradient(0, 0, size, size);
+      gradient.addColorStop(0, percent >= 100 ? '#ea4335' : percent >= 80 ? '#f9ab00' : '#34a853');
+      gradient.addColorStop(1, percent >= 100 ? '#c5221f' : percent >= 80 ? '#e8890c' : '#1a73e8');
+      ctx.strokeStyle = gradient;
+      ctx.lineWidth = lineWidth;
+      ctx.lineCap = 'round';
+      ctx.stroke();
+    }
+
+    // ===== 渲染预算明细表格 =====
+    function renderBudgetTable() {
+      var details = getCategoryBudgetDetail();
+      var tbody = document.getElementById('budget-table-body');
+
+      tbody.innerHTML = details.map(function (d) {
+        var statusCls, statusText;
+        if (d.percent >= 100) {
+          statusCls = 'budget-status--danger';
+          statusText = '🚨 已超支';
+        } else if (d.percent >= 80) {
+          statusCls = 'budget-status--warning';
+          statusText = '⚠️ 接近上限';
+        } else {
+          statusCls = 'budget-status--normal';
+          statusText = '✅ 正常';
+        }
+
+        var rowCls = '';
+        if (d.percent >= 100) rowCls = 'budget-row--danger';
+        else if (d.percent >= 80) rowCls = 'budget-row--warning';
+
+        var barCls = 'progress-bar__fill';
+        if (d.percent >= 100) barCls += ' progress-bar__fill--danger';
+        else if (d.percent >= 80) barCls += ' progress-bar__fill--warning';
+
+        return '<tr class="' + rowCls + '">' +
+          '<td style="font-weight: 600;">' + getCategoryIcon(d.category) + ' ' + d.category + '</td>' +
+          '<td>¥' + d.budget.toFixed(2) + '</td>' +
+          '<td style="color: var(--color-warning); font-weight: 600;">¥' + d.spent.toFixed(2) + '</td>' +
+          '<td style="color: ' + (d.remaining >= 0 ? 'var(--color-secondary)' : 'var(--color-warning)') + '; font-weight: 600;">¥' + d.remaining.toFixed(2) + '</td>' +
+          '<td>' +
+            '<div class="progress-bar">' +
+              '<div class="' + barCls + '" style="width: ' + Math.min(d.percent, 100) + '%;"></div>' +
+            '</div>' +
+          '</td>' +
+          '<td><span class="' + statusCls + '">' + statusText + '</span></td>' +
+        '</tr>';
+      }).join('');
+    }
+
+    // ===== 打开设置预算模态框 =====
+    function openBudgetModal() {
+      var categories = ['餐饮', '交通', '购物', '住房', '娱乐', '医疗', '教育', '其他'];
+      var customBudget = localStorage.getItem('zhichaitong_category_budget');
+      var customMap = customBudget ? JSON.parse(customBudget) : {};
+
+      // 读取之前保存的总额
+      var savedTotal = localStorage.getItem('zhichaitong_budget_total') || '';
+      document.getElementById('budget-total-input').value = savedTotal;
+
+      var fieldsHTML = categories.map(function (cat) {
+        return '<div class="form-group">' +
+          '<label class="form-label">' + getCategoryIcon(cat) + ' ' + cat + '（元）</label>' +
+          '<input type="number" class="form-input budget-input" data-category="' + cat + '" ' +
+            'value="' + (customMap[cat] || '') + '" placeholder="留空=不设预算" min="0" step="0.01">' +
+        '</div>';
+      }).join('');
+
+      document.getElementById('budget-modal-fields').innerHTML = fieldsHTML;
+      document.getElementById('budget-modal').classList.add('modal-overlay--visible');
+    }
+
+    // ===== 关闭模态框 =====
+    function closeBudgetModal() {
+      document.getElementById('budget-modal').classList.remove('modal-overlay--visible');
+    }
+
+    // ===== 一键重置预算 =====
+    function resetBudgetSettings() {
+      localStorage.removeItem('zhichaitong_category_budget');
+      localStorage.removeItem('zhichaitong_budget_total');
+
+      // 清空总额输入
+      var totalInput = document.getElementById('budget-total-input');
+      if (totalInput) totalInput.value = '';
+
+      // 清空各分类输入
+      var inputs = document.querySelectorAll('.budget-input');
+      inputs.forEach(function (inp) { inp.value = ''; });
+
+      closeBudgetModal();
+      renderBudgetOverview();
+      renderBudgetTable();
+      showToast('预算已重置！所有预算设置已清空。');
+    }
+
+    // ===== 保存预算设置（新规则） =====
+    function saveBudgetSettings() {
+      var categories = ['餐饮', '交通', '购物', '住房', '娱乐', '医疗', '教育', '其他'];
+      var inputs = document.querySelectorAll('.budget-input');
+      var totalInputVal = document.getElementById('budget-total-input').value.trim();
+      var totalAmount = parseFloat(totalInputVal) || 0;
+
+      // 收集用户手动填写的分类预算
+      var customMap = {};
+      var filledCount = 0;
+      var filledTotal = 0;
+      inputs.forEach(function (inp) {
+        var val = parseFloat(inp.value);
+        if (!isNaN(val) && val > 0 && inp.value.trim() !== '') {
+          customMap[inp.dataset.category] = val;
+          filledCount++;
+          filledTotal += val;
+        }
+      });
+
+      var emptyCount = categories.length - filledCount; // 留空的分类数
+
+      if (totalAmount > 0) {
+        // 用户填写了总额
+        if (filledTotal > totalAmount) {
+          // ❌ 数据有误：各分类金额之和超过总额
+          showToast('❌ 数据有误！各分类预算总额（¥' + filledTotal.toFixed(2) + '）超过了总预算（¥' + totalAmount.toFixed(2) + '），请检查后重试。', 'error');
+          return;
+        }
+        var remaining = totalAmount - filledTotal;
+        if (emptyCount > 0 && remaining > 0) {
+          // 将剩余额度均分到留空的分类
+          var perCategory = remaining / emptyCount;
+          inputs.forEach(function (inp) {
+            var cat = inp.dataset.category;
+            if (!customMap[cat]) {
+              customMap[cat] = Math.round(perCategory * 100) / 100;
+            }
+          });
+        } else if (emptyCount > 0 && remaining === 0) {
+          // 总额刚好等于已填写的，留空项设为0（无预算）
+          inputs.forEach(function (inp) {
+            var cat = inp.dataset.category;
+            if (!customMap[cat]) {
+              customMap[cat] = 0;
+            }
+          });
+        }
+        // 如果没有留空项且filledTotal <= totalAmount，直接使用用户填的值
+      } else {
+        // 没填总额：只填了的部分保留，留空的就是无预算（不均分！）
+        inputs.forEach(function (inp) {
+          var cat = inp.dataset.category;
+          if (!customMap[cat]) {
+            customMap[cat] = 0; // 留空=无预算
+          }
+        });
+      }
+
+      // 计算最终总预算
+      var finalTotal = Object.values(customMap).reduce(function (s, v) { return s + v; }, 0);
+
+      // 保存
+      localStorage.setItem('zhichaitong_category_budget', JSON.stringify(customMap));
+      localStorage.setItem('zhichaitong_budget_total', totalInputVal);
+
+      // 更新月度预算记录
+      if (finalTotal > 0) {
+        var budgets = getBudget();
+        var month = getCurrentMonthStr();
+        var found = budgets.find(function (b) { return b.month === month; });
+        if (found) {
+          found.budget = finalTotal;
+        } else {
+          budgets.push({ month: month, budget: finalTotal, actual: null });
+        }
+        saveBudget(budgets);
+      }
+
+      closeBudgetModal();
+      renderBudgetOverview();
+      renderBudgetTable();
+      showToast('预算设置已保存！');
+    }
+
+    // 点击遮罩关闭模态框
+    document.addEventListener('DOMContentLoaded', function () {
+      initBudgetPage();
+
+      var modal = document.getElementById('budget-modal');
+      modal.addEventListener('click', function (e) {
+        if (e.target === modal) closeBudgetModal();
+      });
+    });
+  </script>
+
+  <!-- 注册 Service Worker -->
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(function() {});
+  }
+  </script>
+</body>
+</html>

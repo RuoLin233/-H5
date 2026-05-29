@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1a73e8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="智财通">
+  <link rel="apple-touch-icon" href="images/logo.jpg">
+  <title>记账 - 智财通</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__logo">
+        <img src="images/logo.jpg" alt="智财通" class="navbar__logo-img">
+        <span class="navbar__logo-text">智财通</span>
+      </a>
+      <input type="checkbox" id="nav-toggle" class="navbar__toggle-checkbox">
+      <label for="nav-toggle" class="navbar__hamburger">
+        <span class="navbar__hamburger-line"></span>
+        <span class="navbar__hamburger-line"></span>
+        <span class="navbar__hamburger-line"></span>
+      </label>
+      <div class="navbar__links">
+        <a href="index.html" class="navbar__link">首页</a>
+        <a href="record.html" class="navbar__link navbar__link--active">记账</a>
+        <a href="budget.html" class="navbar__link">预算</a>
+        <a href="chart.html" class="navbar__link">图表</a>
+        <a href="report.html" class="navbar__link">报表</a>
+        <a href="about.html" class="navbar__link">关于</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主内容 -->
+  <main>
+    <div class="page-section">
+      <h1 class="page-title">快速记账</h1>
+      <p class="page-subtitle">记录每一笔收支，掌握财务动态</p>
+
+      <!-- 优化8: 每日理财小贴士 -->
+      <div id="daily-tip-record"></div>
+
+      <!-- 记账表单卡片 -->
+      <div class="card" style="margin-bottom: 24px;">
+        <div class="card__body">
+          <form id="record-form">
+            <!-- 类型切换 -->
+            <div class="form-group">
+              <label class="form-label">记录类型</label>
+              <div class="type-toggle">
+                <button type="button" class="type-toggle__btn type-toggle__btn--active" data-type="expense" onclick="switchRecordType('expense')">
+                  💸 支出
+                </button>
+                <button type="button" class="type-toggle__btn" data-type="income" onclick="switchRecordType('income')">
+                  💰 收入
+                </button>
+              </div>
+            </div>
+
+            <!-- 金额输入 -->
+            <div class="form-group">
+              <label class="form-label" for="amount">金额（元）</label>
+              <input type="number" id="amount" class="form-input" placeholder="0.00" step="0.01" min="0" required style="font-size: 1.5rem; text-align: center; font-weight: 700;">
+            </div>
+
+            <!-- 分类选择 -->
+            <div class="form-group">
+              <label class="form-label">分类</label>
+              <div class="category-group" id="category-group">
+                <!-- 由 JS 动态生成 -->
+              </div>
+            </div>
+
+            <!-- 日期选择 -->
+            <div class="form-group">
+              <label class="form-label" for="record-date">日期</label>
+              <input type="date" id="record-date" class="form-input" required>
+            </div>
+
+            <!-- 备注 -->
+            <div class="form-group">
+              <label class="form-label" for="note">备注（可选）</label>
+              <input type="text" id="note" class="form-input" placeholder="简要描述这笔收支...">
+            </div>
+
+            <!-- 提交按钮 -->
+            <button type="submit" class="btn btn--primary btn--block" style="margin-top: 8px;">
+              <i class="fa fa-check"></i> 确认记录
+            </button>
+          </form>
+        </div>
+      </div>
+
+      <!-- 当日汇总 -->
+      <div class="daily-summary" id="daily-summary">
+        <div class="daily-summary__item">
+          <div class="daily-summary__label">今日收入</div>
+          <div class="daily-summary__value daily-summary__value--income" id="today-income">¥0.00</div>
+        </div>
+        <div class="daily-summary__item">
+          <div class="daily-summary__label">今日支出</div>
+          <div class="daily-summary__value daily-summary__value--expense" id="today-expense">¥0.00</div>
+        </div>
+        <div class="daily-summary__item">
+          <div class="daily-summary__label">今日净额</div>
+          <div class="daily-summary__value" id="today-net">¥0.00</div>
+        </div>
+      </div>
+
+      <!-- 最近记录 -->
+      <div class="records-list">
+        <h2 class="records-list__title">📝 最近记录</h2>
+        <div id="records-container">
+          <!-- 由 JS 动态生成 -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">💰 智财通</p>
+          <p class="footer__desc">智能个人财务管理平台，让每一笔收支都有迹可循。</p>
+        </div>
+        <div>
+          <p class="footer__title">快速链接</p>
+          <div class="footer__links">
+            <a href="index.html" class="footer__link">首页</a>
+            <a href="record.html" class="footer__link">记账</a>
+            <a href="budget.html" class="footer__link">预算</a>
+            <a href="chart.html" class="footer__link">图表</a>
+            <a href="report.html" class="footer__link">报表</a>
+          </div>
+        </div>
+        <div>
+          <p class="footer__title">联系方式</p>
+          <div class="footer__links">
+            <span class="footer__link">📧 zhicaitong@example.com</span>
+            <span class="footer__link">📞 400-888-XXXX</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        © 2026 智财通 | AI赋能新生态 期末课程项目 | 保留所有权利
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    // ===== 当前记账类型 =====
+    var currentRecordType = 'expense';
+    var selectedCategory = '';
+
+    // ===== 切换收支类型 =====
+    function switchRecordType(type) {
+      currentRecordType = type;
+      // 更新按钮样式
+      document.querySelectorAll('.type-toggle__btn').forEach(function (btn) {
+        btn.classList.toggle('type-toggle__btn--active', btn.dataset.type === type);
+      });
+      // 重新渲染分类按钮
+      renderCategoryButtons();
+    }
+
+    // ===== 渲染分类按钮 =====
+    function renderCategoryButtons() {
+      var categories = currentRecordType === 'expense'
+        ? ['餐饮', '交通', '购物', '住房', '娱乐', '医疗', '教育', '其他']
+        : ['工资', '理财收益', '兼职', '其他'];
+
+      var container = document.getElementById('category-group');
+      container.innerHTML = categories.map(function (cat) {
+        var icon = getCategoryIcon(cat);
+        return '<button type="button" class="category-btn' + (cat === selectedCategory ? ' category-btn--active' : '') + '" onclick="selectCategory(\'' + cat + '\', this)">' + icon + ' ' + cat + '</button>';
+      }).join('');
+    }
+
+    // ===== 选中分类 =====
+    function selectCategory(cat, btn) {
+      selectedCategory = cat;
+      document.querySelectorAll('.category-btn').forEach(function (b) {
+        b.classList.remove('category-btn--active');
+      });
+      btn.classList.add('category-btn--active');
+    }
+
+    // ===== 初始化表单 =====
+    async function initRecordPage() {
+      // 初始化默认数据
+      await initDefaultRecords();
+
+      // 设置默认日期为今天
+      document.getElementById('record-date').value = getTodayStr();
+
+      // 渲染分类
+      renderCategoryButtons();
+
+      // 渲染当日汇总
+      renderDailySummary();
+
+      // 渲染最近记录
+      renderRecentRecords();
+
+      // 绑定表单提交
+      document.getElementById('record-form').addEventListener('submit', handleRecordSubmit);
+
+      // 优化8: 显示每日小贴士
+      showDailyTip('#daily-tip-record');
+
+      // 优化6: 预算超支检查
+      checkBudgetAlerts();
+    }
+
+    // ===== 渲染当日汇总 =====
+    function renderDailySummary() {
+      var records = getRecords();
+      var today = getTodayStr();
+
+      var todayRecords = records.filter(function (r) { return r.date === today; });
+      var todayIncome = todayRecords.filter(function (r) { return r.type === 'income'; })
+        .reduce(function (s, r) { return s + r.amount; }, 0);
+      var todayExpense = todayRecords.filter(function (r) { return r.type === 'expense'; })
+        .reduce(function (s, r) { return s + r.amount; }, 0);
+      var todayNet = todayIncome - todayExpense;
+
+      document.getElementById('today-income').textContent = '¥' + todayIncome.toFixed(2);
+      document.getElementById('today-expense').textContent = '¥' + todayExpense.toFixed(2);
+      var netEl = document.getElementById('today-net');
+      netEl.textContent = (todayNet >= 0 ? '+' : '') + '¥' + todayNet.toFixed(2);
+      netEl.className = 'daily-summary__value daily-summary__value--' + (todayNet >= 0 ? 'positive' : 'negative');
+    }
+
+    // ===== 渲染最近记录 =====
+    function renderRecentRecords() {
+      var records = getRecords().slice(0, 5);
+      var container = document.getElementById('records-container');
+
+      if (records.length === 0) {
+        container.innerHTML = '<p style="text-align: center; color: var(--color-text-secondary); padding: 20px;">暂无记录，点击上方表单添加第一笔！</p>';
+        return;
+      }
+
+      container.innerHTML = records.map(function (r) {
+        var icon = getCategoryIcon(r.category);
+        var sign = r.type === 'income' ? '+' : '-';
+        var cls = r.type === 'income' ? 'record-item__icon--income' : 'record-item__icon--expense';
+        var amtCls = r.type === 'income' ? 'record-item__amount--income' : 'record-item__amount--expense';
+        var dateFormatted = r.date.slice(5).replace('-', '/');
+
+        return '<div class="record-item" id="record-' + r.id + '">' +
+          '<div class="record-item__left">' +
+          '<div class="record-item__icon ' + cls + '">' + icon + '</div>' +
+          '<div class="record-item__info">' +
+          '<span class="record-item__category">' + r.category + '</span>' +
+          '<span class="record-item__note">' + (r.note || '无备注') + '</span>' +
+          '</div>' +
+          '</div>' +
+          '<div class="record-item__right">' +
+          '<span class="record-item__date">' + dateFormatted + '</span>' +
+          '<span class="record-item__amount ' + amtCls + '">' + sign + '¥' + r.amount.toFixed(2) + '</span>' +
+          '<button class="record-item__delete" onclick="handleDeleteRecord(' + r.id + ')" title="删除"><i class="fa fa-trash-o"></i></button>' +
+          '</div>' +
+          '</div>';
+      }).join('');
+    }
+
+    // ===== 处理表单提交 =====
+    function handleRecordSubmit(e) {
+      e.preventDefault();
+
+      var amount = parseFloat(document.getElementById('amount').value);
+      var date = document.getElementById('record-date').value;
+      var note = document.getElementById('note').value.trim();
+
+      if (!amount || amount <= 0) {
+        showToast('请输入有效金额', 'error');
+        return;
+      }
+      if (!date) {
+        showToast('请选择日期', 'error');
+        return;
+      }
+      if (!selectedCategory) {
+        showToast('请选择分类', 'error');
+        return;
+      }
+
+      var record = {
+        type: currentRecordType,
+        category: selectedCategory,
+        amount: amount,
+        date: date,
+        note: note
+      };
+
+      addRecord(record);
+      showToast('记录已添加！');
+
+      // 重置表单
+      document.getElementById('amount').value = '';
+      document.getElementById('note').value = '';
+      selectedCategory = '';
+      renderCategoryButtons();
+
+      // 刷新数据
+      renderDailySummary();
+      renderRecentRecords();
+    }
+
+    // ===== 删除记录 =====
+    function handleDeleteRecord(id) {
+      if (!confirm('确定要删除这条记录吗？')) return;
+      deleteRecord(id);
+      showToast('记录已删除');
+      renderDailySummary();
+      renderRecentRecords();
+    }
+
+    // ===== 页面加载 =====
+    document.addEventListener('DOMContentLoaded', initRecordPage);
+  </script>
+
+  <!-- 注册 Service Worker -->
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(function() {});
+  }
+  </script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+[
+  { "month": "2026-01", "budget": 6000, "actual": 4230.20 },
+  { "month": "2026-02", "budget": 6000, "actual": 5692.50 },
+  { "month": "2026-03", "budget": 6000, "actual": 4640.10 },
+  { "month": "2026-04", "budget": 6000, "actual": 7554.90 },
+  { "month": "2026-05", "budget": 6000, "actual": 4129.00 },
+  { "month": "2026-06", "budget": 6000, "actual": null },
+  { "month": "2026-07", "budget": 6000, "actual": null },
+  { "month": "2026-08", "budget": 6000, "actual": null },
+  { "month": "2026-09", "budget": 6000, "actual": null },
+  { "month": "2026-10", "budget": 6000, "actual": null },
+  { "month": "2026-11", "budget": 6000, "actual": null },
+  { "month": "2026-12", "budget": 6000, "actual": null }
+]

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1a73e8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="智财通">
+  <link rel="apple-touch-icon" href="images/logo.jpg">
+  <title>关于 - 智财通</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__logo">
+        <img src="images/logo.jpg" alt="智财通" class="navbar__logo-img">
+        <span class="navbar__logo-text">智财通</span>
+      </a>
+      <input type="checkbox" id="nav-toggle" class="navbar__toggle-checkbox">
+      <label for="nav-toggle" class="navbar__hamburger">
+        <span class="navbar__hamburger-line"></span>
+        <span class="navbar__hamburger-line"></span>
+        <span class="navbar__hamburger-line"></span>
+      </label>
+      <div class="navbar__links">
+        <a href="index.html" class="navbar__link">首页</a>
+        <a href="record.html" class="navbar__link">记账</a>
+        <a href="budget.html" class="navbar__link">预算</a>
+        <a href="chart.html" class="navbar__link">图表</a>
+        <a href="report.html" class="navbar__link">报表</a>
+        <a href="about.html" class="navbar__link navbar__link--active">关于</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <div class="about-hero">
+    <div class="container">
+      <h1 class="about-hero__title">关于智财通</h1>
+      <p class="about-hero__desc">《AI赋能新生态》期末大作业 · 个人财务智能管理平台</p>
+    </div>
+  </div>
+
+  <!-- 项目介绍 -->
+  <section class="about-section">
+    <h2 class="about-section__title">📖 项目介绍</h2>
+    <div class="about-intro">
+      <p>
+        智财通是一个面向个人用户打造的智能财务记账管理平台。在当今消费多元化的时代，个人财务管理变得愈发重要。
+        我们希望通过这个平台，帮助用户轻松记录每一笔收支，借助智能图表和数据分析，让财务状况一目了然。
+      </p>
+      <p>
+        本项目作为《AI赋能新生态》课程的期末大作业，全程采用 LLM（大语言模型）协作生成，从目录结构到页面代码、
+        从数据模拟到可视化图表，每个环节都充分利用了AI提示词工程，展示了AI在实际项目开发中的强大能力。
+      </p>
+      <p>
+        平台包含记账录入、预算管理、数据分析和财务报表四大核心功能，覆盖了个人财务管理的完整流程。
+      </p>
+    </div>
+  </section>
+
+  <!-- 网站架构思维导图（Markmap） -->
+  <section class="about-section" style="background: var(--color-bg);">
+    <h2 class="about-section__title">🗺️ 网站架构</h2>
+    <p class="section-subtitle">智财通平台内容架构一览</p>
+    <div class="tree-map" id="treeMap"></div>
+  </section>
+
+  <!-- 核心业务流程图（纯CSS实现，无CDN依赖） -->
+  <section class="about-section">
+    <h2 class="about-section__title">🔄 核心业务流程</h2>
+    <p class="section-subtitle">用户使用智财通管理财务的完整流程</p>
+    <div class="flowchart" id="flowChart"></div>
+  </section>
+
+  <!-- 技术栈说明 -->
+  <section class="about-section">
+    <h2 class="about-section__title">🛠️ 技术实现</h2>
+    <div class="feature-grid about-team" style="padding-top: 0;">
+      <div class="card">
+        <div class="card__body" style="text-align: center;">
+          <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">🤖</div>
+          <h3 style="font-weight: 700; margin-bottom: 0.5rem;">LLM协作生成</h3>
+          <p style="font-size: 0.85rem; color: var(--color-text-secondary);">
+            全部页面通过提示词与LLM协作完成，从需求分析到代码输出全流程AI辅助
+          </p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card__body" style="text-align: center;">
+          <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📊</div>
+          <h3 style="font-weight: 700; margin-bottom: 0.5rem;">ECharts 可视化</h3>
+          <p style="font-size: 0.85rem; color: var(--color-text-secondary);">
+            使用 ECharts 5.4.3 构建动态图表，包含饼图、折线图、柱状图三种类型
+          </p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card__body" style="text-align: center;">
+          <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">📱</div>
+          <h3 style="font-weight: 700; margin-bottom: 0.5rem;">响应式设计</h3>
+          <p style="font-size: 0.85rem; color: var(--color-text-secondary);">
+            纯 CSS 响应式布局，适配手机、平板、桌面端，移动优先设计理念
+          </p>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card__body" style="text-align: center;">
+          <div style="font-size: 2.5rem; margin-bottom: 0.75rem;">💾</div>
+          <h3 style="font-weight: 700; margin-bottom: 0.5rem;">LocalStorage 存储</h3>
+          <p style="font-size: 0.85rem; color: var(--color-text-secondary);">
+            收支和预算数据均存储在本地浏览器，无需服务器，保护用户隐私
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 团队成员 -->
+  <section class="about-section" style="background: var(--color-bg);">
+    <h2 class="about-section__title">👥 团队成员</h2>
+    <p class="section-subtitle">本项目由个人独立完成，以下为课程相关信息</p>
+    <div class="about-team">
+      <div class="about-team__member">
+        <div class="about-team__avatar">🎓</div>
+        <div class="about-team__name">学生 / 开发者</div>
+        <div class="about-team__role">前端开发 · AI提示词工程</div>
+      </div>
+      <div class="about-team__member">
+        <div class="about-team__avatar">🏫</div>
+        <div class="about-team__name">课程</div>
+        <div class="about-team__role">AI赋能新生态</div>
+      </div>
+      <div class="about-team__member">
+        <div class="about-team__avatar">📅</div>
+        <div class="about-team__name">学期</div>
+        <div class="about-team__role">2025-2026学年 · 第二学期</div>
+      </div>
+      <div class="about-team__member">
+        <div class="about-team__avatar">💡</div>
+        <div class="about-team__name">项目精神</div>
+        <div class="about-team__role">用AI赋能开发，让创意落地</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 应用场景展示 -->
+  <section class="about-section">
+    <h2 class="about-section__title">📱 应用场景</h2>
+    <p class="section-subtitle">智财通助力日常财务管理</p>
+    <div style="max-width: 800px; margin: 0 auto; text-align: center;">
+      <img src="images/app-scene.jpg" alt="智财通应用场景" style="max-width: 100%; border-radius: var(--radius-lg); box-shadow: var(--shadow-md);">
+    </div>
+  </section>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">💰 智财通</p>
+          <p class="footer__desc">智能个人财务管理平台，让每一笔收支都有迹可循。</p>
+        </div>
+        <div>
+          <p class="footer__title">快速链接</p>
+          <div class="footer__links">
+            <a href="index.html" class="footer__link">首页</a>
+            <a href="record.html" class="footer__link">记账</a>
+            <a href="budget.html" class="footer__link">预算</a>
+            <a href="chart.html" class="footer__link">图表</a>
+            <a href="report.html" class="footer__link">报表</a>
+          </div>
+        </div>
+        <div>
+          <p class="footer__title">联系方式</p>
+          <div class="footer__links">
+            <span class="footer__link">📧 zhicaitong@example.com</span>
+            <span class="footer__link">📞 400-888-XXXX</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        © 2026 智财通 | AI赋能新生态 期末课程项目 | 保留所有权利
+      </div>
+    </div>
+  </footer>
+
+  <!-- 网站架构树形图（纯CSS+JS实现） -->
+  <style>
+    .tree-map {
+      max-width: 800px; margin: 0 auto; padding: 24px 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+    .tree-map ul { list-style: none; padding-left: 20px; margin: 4px 0; }
+    .tree-map > ul { padding-left: 0; }
+    .tree-map li { position: relative; padding: 6px 0 6px 18px; line-height: 1.7; font-size: 0.95rem; color: #333; }
+    .tree-map li::before { content: ''; position: absolute; left: 0; top: 15px; width: 10px; height: 2px; background: #bbb; border-radius: 1px; }
+    .tree-map > ul > li::before { display: none; }
+    .tree-map li:last-child::after { content: ''; position: absolute; left: -10px; top: 0; width: 2px; height: calc(100% - 14px); background: #ddd; }
+    .tree-map li:only-child::after { display: none; }
+    .tree-map li:not(:last-child)::after { content: ''; position: absolute; left: -10px; top: 0; width: 2px; height: 100%; background: #ddd; }
+    .tree-root { font-size: 1.3rem; font-weight: 700; color: #1a73e8; padding: 12px 0 8px; letter-spacing: 1px; }
+    .tree-lv1 { font-size: 1.08rem; font-weight: 600; color: #34a853; margin-top: 6px; }
+    .tree-lv2 { font-size: 0.93rem; color: #5f6368; }
+    .tree-icon { margin-right: 5px; }
+  </style>
+  <script>
+    (function(){
+      // 纯JS生成架构树
+      var data = {
+        name: '🗺️ 智财通', cls: 'tree-root', children: [
+          { name: '🏠 首页', cls: 'tree-lv1', children: ['品牌介绍','核心功能概述','快速入口','用户数据展示'] },
+          { name: '📝 记账', cls: 'tree-lv1', children: ['收入记录','支出记录','分类选择','日期与备注','当日汇总'] },
+          { name: '💰 预算', cls: 'tree-lv1', children: ['月度预算总览','分类预算明细','超支预警','预算设置'] },
+          { name: '📊 数据分析', cls: 'tree-lv1', children: ['收支分类饼图','月度趋势折线图','消费柱状图','数据解读'] },
+          { name: '📋 财务报表', cls: 'tree-lv1', children: ['月度汇总','年度对比','收支明细','导出功能'] },
+          { name: 'ℹ️ 关于', cls: 'tree-lv1', children: ['项目介绍','架构图','业务流程','联系方式'] }
+        ]
+      };
+      function buildTree(node) {
+        if (typeof node === 'string') return '<li class="tree-lv2"><span class="tree-icon">├</span>' + node + '</li>';
+        var html = '<li class="' + (node.cls||'') + '">' + node.name;
+        if (node.children && node.children.length) {
+          html += '<ul>';
+          for (var i=0;i<node.children.length;i++) html += buildTree(node.children[i]);
+          html += '</ul>';
+        }
+        html += '</li>';
+        return html;
+      }
+      var el = document.getElementById('treeMap');
+      if (el) el.innerHTML = '<ul>' + buildTree(data) + '</ul>';
+    })();
+  </script>
+
+  <!-- 纯CSS业务流程图 -->
+  <style>
+    .flowchart { max-width: 800px; margin: 0 auto; padding: 24px 16px; font-family: var(--font-stack); }
+    .flow-step {
+      display: flex; align-items: center; justify-content: center; gap: 0;
+      padding: 12px 20px;
+      border-radius: var(--radius-md);
+      font-size: 0.92rem; font-weight: 600; text-align: center;
+      transition: all 0.25s ease; cursor: default; position: relative;
+      min-width: 160px; box-shadow: var(--shadow-sm);
+    }
+    .flow-step:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+    .flow-start { background: linear-gradient(135deg, #1a73e8, #4285f4); color: white; border-radius: 12px; padding: 14px 28px; font-size: 1rem; }
+    .flow-normal { background: #e8f0fe; color: #1a73e8; border: 1.5px solid #d2e3fc; }
+    .flow-decision { background: #fef7e0; color: #b06000; border: 1.5px solid #fdd663; border-radius: 50%; width: 120px; height: 120px; display: flex; align-items: center; justify-content: center; flex-direction: column; min-width: auto; }
+    .flow-warn { background: #fce8e6; color: #c5221f; border: 1.5px solid #fad2cf; }
+    .flow-ok { background: #e6f4ea; color: #137333; border: 1.5px solid #ceead6; }
+    .flow-end { background: linear-gradient(135deg, #34a853, #0d652d); color: white; border-radius: 12px; padding: 14px 28px; font-size: 1rem; }
+    [data-theme="dark"] .flow-normal { background: #1a2a4a; color: #8ab4f8; border-color: #2a3f6a; }
+    [data-theme="dark"] .flow-decision { background: #3a3010; color: #fdd663; border-color: #5a4a18; }
+    [data-theme="dark"] .flow-warn { background: #3a1515; color: #f28b82; border-color: #5a2222; }
+    [data-theme="dark"] .flow-ok { background: #1a3020; color: #81c995; border-color: #2a5035; }
+    .flow-row { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; margin: 6px 0; }
+    .flow-arrow { font-size: 1.4rem; color: var(--color-text-secondary); font-weight: 400; flex-shrink: 0; }
+    .flow-arrow-down { display: flex; flex-direction: column; align-items: center; color: var(--color-text-secondary); font-size: 1.2rem; margin: 4px 0; line-height: 1; }
+    .flow-branch { display: flex; align-items: flex-start; gap: 16px; justify-content: center; flex-wrap: wrap; margin: 8px 0; }
+    .flow-branch-col { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .flow-label { font-size: 0.78rem; color: var(--color-text-secondary); background: var(--color-bg); padding: 2px 10px; border-radius: 10px; border: 1px solid var(--color-border); }
+    .flow-center { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+  </style>
+  <script>
+    (function(){
+      var fc = document.getElementById('flowChart');
+      if (!fc) return;
+      fc.innerHTML =
+        '<div class="flow-center">' +
+          '<div class="flow-step flow-start">👤 用户开始使用</div>' +
+          '<div class="flow-arrow-down">▼</div>' +
+          '<div class="flow-step flow-normal">📝 记录当日收支</div>' +
+          '<div class="flow-arrow-down">▼</div>' +
+          '<div class="flow-step flow-normal">🏷️ 选择收支分类</div>' +
+          '<div class="flow-arrow-down">▼</div>' +
+          '<div class="flow-step flow-decision"><span style="font-size:0.85rem;">类型？</span><br><span style="font-size:0.75rem;font-weight:400;color:#5f6368;margin-top:4px;">收入/支出</span></div>' +
+          '<div class="flow-arrow-down">▼</div>' +
+          '<div class="flow-branch">' +
+            '<div class="flow-branch-col">' +
+              '<span class="flow-label">收入</span>' +
+              '<div class="flow-step flow-normal">💰 计入收入</div>' +
+            '</div>' +
+            '<div class="flow-branch-col">' +
+              '<span class="flow-label">支出</span>' +
+              '<div class="flow-step flow-normal">💸 计入支出</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="flow-arrow-down">▼</div>' +
+          '<div class="flow-step flow-normal" style="background:#e8f0fe;color:#1557b0;">💾 系统汇总数据</div>' +
+          '<div class="flow-arrow-down">▼</div>' +
+          '<div class="flow-step flow-normal">📊 查看图表分析</div>' +
+          '<div class="flow-arrow-down">▼</div>' +
+          '<div class="flow-step flow-normal">📋 对比预算执行</div>' +
+          '<div class="flow-arrow-down">▼</div>' +
+          '<div class="flow-step flow-decision"><span style="font-size:0.85rem;">超支？</span><br><span style="font-size:0.75rem;font-weight:400;color:#5f6368;margin-top:4px;">是/否</span></div>' +
+          '<div class="flow-arrow-down">▼</div>' +
+          '<div class="flow-branch">' +
+            '<div class="flow-branch-col">' +
+              '<span class="flow-label">是 → 超支</span>' +
+              '<div class="flow-step flow-warn">🚨 超支预警</div>' +
+            '</div>' +
+            '<div class="flow-branch-col">' +
+              '<span class="flow-label">否 → 正常</span>' +
+              '<div class="flow-step flow-ok">✅ 正常范围</div>' +
+            '</div>' +
+          '</div>' +
+          '<div class="flow-arrow-down">▼</div>' +
+          '<div class="flow-step flow-normal" style="background:#e8f0fe;color:#1557b0;">💡 调整消费计划</div>' +
+          '<div class="flow-arrow-down">▼</div>' +
+          '<div class="flow-step flow-normal">📄 生成月度报表</div>' +
+          '<div class="flow-arrow-down">▼</div>' +
+          '<div class="flow-step flow-normal">📥 导出或打印</div>' +
+          '<div class="flow-arrow-down">▼</div>' +
+          '<div class="flow-step flow-end">✨ 财务规划完成</div>' +
+        '</div>';
+    })();
+  </script>
+
+  <script src="js/main.js"></script>
+
+  <!-- 注册 Service Worker -->
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(function() {});
+  }
+  </script>
+</body>
+</html>

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1a73e8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="智财通">
+  <link rel="apple-touch-icon" href="images/logo.jpg">
+  <title>财务数据分析 - 智财通</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__logo">
+        <img src="images/logo.jpg" alt="智财通" class="navbar__logo-img">
+        <span class="navbar__logo-text">智财通</span>
+      </a>
+      <input type="checkbox" id="nav-toggle" class="navbar__toggle-checkbox">
+      <label for="nav-toggle" class="navbar__hamburger">
+        <span class="navbar__hamburger-line"></span>
+        <span class="navbar__hamburger-line"></span>
+        <span class="navbar__hamburger-line"></span>
+      </label>
+      <div class="navbar__links">
+        <a href="index.html" class="navbar__link">首页</a>
+        <a href="record.html" class="navbar__link">记账</a>
+        <a href="budget.html" class="navbar__link">预算</a>
+        <a href="chart.html" class="navbar__link navbar__link--active">图表</a>
+        <a href="report.html" class="navbar__link">报表</a>
+        <a href="about.html" class="navbar__link">关于</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- 主内容 -->
+  <main>
+    <div class="page-section">
+      <h1 class="page-title">财务数据分析</h1>
+      <p class="page-subtitle">多维度可视化图表，深入了解您的收支状况</p>
+
+      <!-- 优化8: 每日理财小贴士 -->
+      <div id="daily-tip-chart"></div>
+
+      <!-- 图表 Tab 切换 -->
+      <div class="chart-container">
+        <div class="chart-tabs">
+          <button class="tab-btn tab-btn--active" data-tab="pie">收支分类</button>
+          <button class="tab-btn" data-tab="line">月度趋势</button>
+          <button class="tab-btn" data-tab="bar">消费分析</button>
+        </div>
+
+        <!-- 饼图：收支分类 -->
+        <div id="chart-pie" class="chart-box"></div>
+
+        <!-- 折线图：月度趋势 -->
+        <div id="chart-line" class="chart-box chart-box--hidden"></div>
+
+        <!-- 柱状图：消费分析 -->
+        <div id="chart-bar" class="chart-box chart-box--hidden"></div>
+      </div>
+
+      <!-- 数据解读 -->
+      <div class="card" style="margin-top: 24px;">
+        <div class="card__body">
+          <h3 class="card__title">📊 数据解读</h3>
+          <div style="color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.8; margin-top: 12px;">
+            <p style="margin-bottom: 12px;">
+              <strong>📍 收支分类饼图：</strong>展示了各类支出的占比情况，餐饮和购物通常占据较大比重，建议重点关注可控支出项目。
+            </p>
+            <p style="margin-bottom: 12px;">
+              <strong>📈 月度趋势图：</strong>呈现收入与支出的月度变化，红色标注的超支月需重点关注，如4月支出明显高于其他月份。
+            </p>
+            <p>
+              <strong>📊 消费分析柱状图：</strong>柱状图显示各类消费累计金额，红色柱子代表超出平均值的项目，帮助您识别非必要支出。
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 快捷操作 -->
+      <div style="text-align: center; margin-top: 32px;">
+        <a href="record.html" class="btn btn--primary">
+          <i class="fa fa-edit"></i> 添加记录
+        </a>
+        <a href="budget.html" class="btn" style="margin-left: 12px; border: 2px solid var(--color-primary); color: var(--color-primary);">
+          <i class="fa fa-calculator"></i> 查看预算
+        </a>
+      </div>
+    </div>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">💰 智财通</p>
+          <p class="footer__desc">智能个人财务管理平台，让每一笔收支都有迹可循，轻松掌控财务状况。</p>
+        </div>
+        <div>
+          <p class="footer__title">快速链接</p>
+          <div class="footer__links">
+            <a href="index.html" class="footer__link">首页</a>
+            <a href="record.html" class="footer__link">记账</a>
+            <a href="budget.html" class="footer__link">预算</a>
+            <a href="chart.html" class="footer__link">图表</a>
+            <a href="report.html" class="footer__link">报表</a>
+          </div>
+        </div>
+        <div>
+          <p class="footer__title">联系方式</p>
+          <div class="footer__links">
+            <span class="footer__link">📧 zhicaitong@example.com</span>
+            <span class="footer__link">📞 400-888-XXXX</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        © 2026 智财通 | AI赋能新生态 期末课程项目 | 保留所有权利
+      </div>
+    </div>
+  </footer>
+
+  <!-- ECharts CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    // 优化8: 图表页小贴士
+    document.addEventListener('DOMContentLoaded', function() {
+      showDailyTip('#daily-tip-chart');
+    });
+  </script>
+  <script src="js/chart.js"></script>
+
+  <!-- 注册 Service Worker -->
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(function() {});
+  }
+  </script>
+</body>
+</html>

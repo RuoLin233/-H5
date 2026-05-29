@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1a73e8">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="智财通">
+  <link rel="apple-touch-icon" href="images/logo.jpg">
+  <title>智财通 - 个人财务智能管理平台</title>
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+  <!-- 导航栏 -->
+  <nav class="navbar">
+    <div class="navbar__inner">
+      <a href="index.html" class="navbar__logo">
+        <img src="images/logo.jpg" alt="智财通" class="navbar__logo-img">
+        <span class="navbar__logo-text">智财通</span>
+      </a>
+      <input type="checkbox" id="nav-toggle" class="navbar__toggle-checkbox">
+      <label for="nav-toggle" class="navbar__hamburger">
+        <span class="navbar__hamburger-line"></span>
+        <span class="navbar__hamburger-line"></span>
+        <span class="navbar__hamburger-line"></span>
+      </label>
+      <div class="navbar__links">
+        <a href="index.html" class="navbar__link navbar__link--active">首页</a>
+        <a href="record.html" class="navbar__link">记账</a>
+        <a href="budget.html" class="navbar__link">预算</a>
+        <a href="chart.html" class="navbar__link">图表</a>
+        <a href="report.html" class="navbar__link">报表</a>
+        <a href="about.html" class="navbar__link">关于</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero 区域 -->
+  <header class="hero">
+    <img src="images/hero-bg.jpg" alt="" class="hero__bg-img">
+    <div class="hero__content container">
+      <h1 class="hero__slogan">每一笔，都算数</h1>
+      <p class="hero__subtitle">智能记账 · 轻松理财 · 掌控未来</p>
+      <div class="hero__buttons">
+        <a href="record.html" class="btn btn--white">
+          <i class="fa fa-edit"></i> 开始记账
+        </a>
+        <a href="report.html" class="btn btn--secondary">
+          <i class="fa fa-line-chart"></i> 查看报表
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- 核心功能区 -->
+  <main>
+    <!-- 优化9: 首页数据概览卡片 -->
+    <div class="home-stats" id="home-stats">
+      <!-- 由 JS 动态渲染 -->
+      <div class="home-stat-card"><div class="home-stat-card__icon">💰</div><div class="home-stat-card__value">加载中...</div><div class="home-stat-card__label">本月收入</div></div>
+      <div class="home-stat-card"><div class="home-stat-card__icon">💸</div><div class="home-stat-card__value">加载中...</div><div class="home-stat-card__label">本月支出</div></div>
+      <div class="home-stat-card"><div class="home-stat-card__icon">📊</div><div class="home-stat-card__value">加载中...</div><div class="home-stat-card__label">本月结余</div></div>
+    </div>
+
+    <!-- 优化8: 每日理财小贴士 -->
+    <div id="daily-tip-home" style="max-width: var(--max-width); margin: 32px auto 0; padding: 0 20px;"></div>
+
+    <section class="container home-features" style="padding-top: 40px; padding-bottom: 20px;">
+      <h2 class="section-title">核心功能</h2>
+      <p class="section-subtitle">四大核心模块，全方位管理您的个人财务</p>
+    </section>
+    
+    <section class="feature-grid">
+      <div class="feature-grid__item">
+        <span class="feature-grid__icon">📝</span>
+        <h3 class="feature-grid__title">快速记账</h3>
+        <p class="feature-grid__desc">3秒完成一笔收支记录，支持多种分类，智能备注，让记账变得轻松简单。</p>
+      </div>
+      
+      <div class="feature-grid__item">
+        <span class="feature-grid__icon">📊</span>
+        <h3 class="feature-grid__title">智能图表</h3>
+        <p class="feature-grid__desc">饼图、折线图、柱状图多维度分析，直观呈现您的收支状况与消费习惯。</p>
+      </div>
+      
+      <div class="feature-grid__item">
+        <span class="feature-grid__icon">💰</span>
+        <h3 class="feature-grid__title">预算管理</h3>
+        <p class="feature-grid__desc">设定月度预算，实时追踪执行进度，超支预警帮您合理规划每一分钱。</p>
+      </div>
+      
+      <div class="feature-grid__item">
+        <span class="feature-grid__icon">📋</span>
+        <h3 class="feature-grid__title">财务报告</h3>
+        <p class="feature-grid__desc">一键生成月度/年度报表，收支明细一目了然，助您做出明智财务决策。</p>
+      </div>
+    </section>
+
+    <!-- 产品亮点 -->
+    <section style="padding: 40px 20px; max-width: var(--max-width); margin: 0 auto;">
+      <h2 class="section-title">为什么选择智财通？</h2>
+      <p class="section-subtitle">简单、智能、可靠的个人财务管理方案</p>
+      
+      <div class="feature-grid" style="padding-top: 0;">
+        <div class="card">
+          <div class="card__body">
+            <h3 class="card__title">🎯 简单易用</h3>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6;">
+              无需复杂操作，打开即可记账。清晰的界面设计，让您快速上手，轻松管理日常收支。
+            </p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card__body">
+            <h3 class="card__title">🔒 数据安全</h3>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6;">
+              所有数据存储在本地浏览器，不上传云端，保护您的财务隐私，安全无忧。
+            </p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card__body">
+            <h3 class="card__title">⚡ 智能分析</h3>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6;">
+              自动生成可视化图表，多维度分析您的消费习惯，帮助发现潜在的财务问题。
+            </p>
+          </div>
+        </div>
+        
+        <div class="card">
+          <div class="card__body">
+            <h3 class="card__title">📱 随时随地</h3>
+            <p style="color: var(--color-text-secondary); font-size: 0.9rem; line-height: 1.6;">
+              响应式设计，完美适配手机、平板、电脑，随时随地记录您的每一笔收支。
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 统计数据 -->
+    <section style="background: linear-gradient(135deg, #1a73e8 0%, #34a853 100%); padding: 60px 20px; color: white; text-align: center;">
+      <div style="max-width: var(--max-width); margin: 0 auto;">
+        <h2 class="section-title" style="color: white;">用数据说话</h2>
+        <p class="section-subtitle" style="color: rgba(255,255,255,0.8); margin-bottom: 40px;">已帮助用户更好地管理个人财务</p>
+        
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 24px;">
+          <div>
+            <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 8px;" class="animate-stat" data-target="500000" data-suffix="+">0</div>
+            <div style="font-size: 0.9rem; opacity: 0.9;">累计记账笔数</div>
+          </div>
+          <div>
+            <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 8px;" class="animate-stat" data-target="20000" data-suffix="+">0</div>
+            <div style="font-size: 0.9rem; opacity: 0.9;">活跃用户</div>
+          </div>
+          <div>
+            <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 8px;" class="animate-stat" data-target="98" data-suffix="%">0</div>
+            <div style="font-size: 0.9rem; opacity: 0.9;">用户满意度</div>
+          </div>
+          <div>
+            <div style="font-size: 2.5rem; font-weight: 800; margin-bottom: 8px;">0</div>
+            <div style="font-size: 0.9rem; opacity: 0.9;">数据泄露事件</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section style="padding: 80px 20px; text-align: center; background: var(--color-bg);">
+      <div style="max-width: 600px; margin: 0 auto;">
+        <h2 style="font-size: 2rem; font-weight: 800; margin-bottom: 1rem;">开始您的理财之旅</h2>
+        <p style="color: var(--color-text-secondary); margin-bottom: 2rem; font-size: 1.1rem;">
+          记录每一笔收支，掌控每一分钱，让财务自由不再是梦想。
+        </p>
+        <div style="display: flex; justify-content: center; gap: 16px; flex-wrap: wrap;">
+          <a href="record.html" class="btn btn--primary">立即开始记账</a>
+          <a href="about.html" class="btn" style="border: 2px solid var(--color-primary); color: var(--color-primary);">了解更多</a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- 页脚 -->
+  <footer class="footer">
+    <div class="footer__inner">
+      <div class="footer__grid">
+        <div>
+          <p class="footer__brand">💰 智财通</p>
+          <p class="footer__desc">智能个人财务管理平台，让每一笔收支都有迹可循，轻松掌控财务状况。</p>
+        </div>
+        <div>
+          <p class="footer__title">快速链接</p>
+          <div class="footer__links">
+            <a href="index.html" class="footer__link">首页</a>
+            <a href="record.html" class="footer__link">记账</a>
+            <a href="budget.html" class="footer__link">预算</a>
+            <a href="chart.html" class="footer__link">图表</a>
+            <a href="report.html" class="footer__link">报表</a>
+          </div>
+        </div>
+        <div>
+          <p class="footer__title">联系方式</p>
+          <div class="footer__links">
+            <span class="footer__link">📧 zhicaitong@example.com</span>
+            <span class="footer__link">📞 400-888-XXXX</span>
+            <span class="footer__link">📍 在线客服支持</span>
+          </div>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        © 2026 智财通 | AI赋能新生态 期末课程项目 | 保留所有权利
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      initDefaultRecords().then(function() {
+        renderHomeStats();
+        showDailyTip('#daily-tip-home');
+      });
+
+      // 优化4: 首页统计数字滚动动画
+      var statEls = document.querySelectorAll('.animate-stat');
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var el = entry.target;
+            var target = parseInt(el.getAttribute('data-target'));
+            var suffix = el.getAttribute('data-suffix') || '';
+            var duration = 1500;
+            var start = 0;
+            var startTime = null;
+            function step(ts) {
+              if (!startTime) startTime = ts;
+              var progress = Math.min((ts - startTime) / duration, 1);
+              var eased = 1 - Math.pow(2, -10 * progress);
+              var current = Math.floor(start + (target - start) * eased);
+              el.textContent = current.toLocaleString() + suffix;
+              if (progress < 1) requestAnimationFrame(step);
+              else el.textContent = target.toLocaleString() + suffix;
+            }
+            requestAnimationFrame(step);
+            observer.unobserve(el);
+          }
+        });
+      }, { threshold: 0.3 });
+      statEls.forEach(function(el) { observer.observe(el); });
+    });
+  </script>
+
+  <!-- 注册 Service Worker -->
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(function() {});
+  }
+  </script>
+</body>
+</html>
