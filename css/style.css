@@ -2086,7 +2086,7 @@ body, .navbar, .card, .hero, .about-hero, .data-table th, .footer,
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 5000;
+    z-index: 3999;
     background: var(--color-white);
     border-top: 1px solid var(--color-border);
     padding: 6px 4px env(safe-area-inset-bottom, 6px);

@@ -116,13 +116,42 @@
 
       <!-- 最近记录 -->
       <div class="records-list">
-        <h2 class="records-list__title">📝 最近记录</h2>
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; margin-bottom: 12px;">
+          <h2 class="records-list__title" style="margin-bottom: 0;">📝 最近记录</h2>
+          <button class="btn btn--danger btn--sm" onclick="openClearModal()" id="btn-clear-month">
+            <i class="fa fa-trash-o"></i> 一键清空当月记录
+          </button>
+        </div>
         <div id="records-container">
           <!-- 由 JS 动态生成 -->
         </div>
       </div>
     </div>
   </main>
+
+  <!-- 清空当月记录确认弹窗 -->
+  <div class="modal-overlay" id="clear-modal">
+    <div class="modal">
+      <div class="modal__header">
+        <h3 class="modal__title">⚠️ 确认清空当月记录</h3>
+        <button class="modal__close" onclick="closeClearModal()">
+          <i class="fa fa-times"></i>
+        </button>
+      </div>
+      <div class="modal__body">
+        <p style="font-size: 0.95rem; line-height: 1.7; color: var(--color-text);">
+          即将<strong style="color: var(--color-warning);">清空本月（<span id="clear-month-label"></span>）</strong>所有收支记录。
+        </p>
+        <p style="font-size: 0.85rem; color: var(--color-text-secondary); margin-top: 8px;">
+          此操作不可撤销，其他月份的数据不受影响。确认继续吗？
+        </p>
+      </div>
+      <div class="modal__footer">
+        <button class="btn" style="border: 1px solid var(--color-border);" onclick="closeClearModal()">取消</button>
+        <button class="btn btn--danger" onclick="clearCurrentMonthRecords()">确认清空</button>
+      </div>
+    </div>
+  </div>
 
   <!-- 页脚 -->
   <footer class="footer">
@@ -327,8 +356,42 @@
       renderRecentRecords();
     }
 
+    // ===== 一键清空当月记录 =====
+    function openClearModal() {
+      var month = getCurrentMonthStr();
+      document.getElementById('clear-month-label').textContent = month;
+      document.getElementById('clear-modal').classList.add('modal-overlay--visible');
+    }
+
+    function closeClearModal() {
+      document.getElementById('clear-modal').classList.remove('modal-overlay--visible');
+    }
+
+    function clearCurrentMonthRecords() {
+      var month = getCurrentMonthStr();
+      var records = getRecords();
+      var remaining = records.filter(function(r) { return !r.date.startsWith(month); });
+      var deletedCount = records.length - remaining.length;
+
+      saveRecords(remaining);
+      closeClearModal();
+      showToast('已清空 ' + deletedCount + ' 条当月记录！');
+
+      renderDailySummary();
+      renderRecentRecords();
+    }
+
     // ===== 页面加载 =====
-    document.addEventListener('DOMContentLoaded', initRecordPage);
+    document.addEventListener('DOMContentLoaded', function() {
+      initRecordPage();
+      // 清空弹窗点击遮罩关闭
+      var clearModal = document.getElementById('clear-modal');
+      if (clearModal) {
+        clearModal.addEventListener('click', function(e) {
+          if (e.target === clearModal) closeClearModal();
+        });
+      }
+    });
   </script>
 
   <!-- 注册 Service Worker -->

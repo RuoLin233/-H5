@@ -6,6 +6,13 @@ clearTimeout(window.__echartsLoadTimeout);
 
 var chartInstances = {};
 
+/** 获取图表高度（移动端自适应） */
+function getChartHeight() {
+  if (window.innerWidth <= 374) return 240;
+  if (window.innerWidth <= 767) return 280;
+  return 400;
+}
+
 /** 初始化所有图表 */
 async function initCharts() {
   // 确保ECharts已加载
@@ -25,18 +32,19 @@ async function initCharts() {
     }
   }
 
-  // 加载数据：优先 localStorage → 再 fetch
+  // 加载数据：优先 localStorage → 仅当从未存储过才 fetch
   var records = [];
-  var stored = localStorage.getItem('zhichaitong_records');
-  if (stored) {
-    try { records = JSON.parse(stored); } catch(e) {}
+  var hasLocalData = localStorage.getItem('zhichaitong_records') !== null;
+  if (hasLocalData) {
+    try { records = JSON.parse(localStorage.getItem('zhichaitong_records')); } catch(e) {}
   }
-  if (records.length === 0) {
+  if (!hasLocalData) {
     try {
       var resp = await fetch('data/finance.json');
       if (resp.ok) records = await resp.json();
     } catch (e) {
       console.error('无法加载财务数据:', e);
+      records = [];
     }
   }
   if (records.length === 0) {
@@ -58,6 +66,51 @@ async function initCharts() {
       if (chart && chart.resize) chart.resize();
     });
   });
+
+  // 页面可见性变化时刷新图表（从其他页面回来时数据可能已更新）
+  document.addEventListener('visibilitychange', function() {
+    if (!document.hidden) {
+      refreshCharts();
+    }
+  });
+
+  // pageshow 事件（兼容 bfcache）
+  window.addEventListener('pageshow', function() {
+    refreshCharts();
+  });
+}
+
+/** 刷新图表数据 */
+function refreshCharts() {
+  var records = [];
+  try {
+    var stored = localStorage.getItem('zhichaitong_records');
+    if (stored) records = JSON.parse(stored);
+  } catch(e) {}
+
+  if (records.length === 0) {
+    document.querySelectorAll('.chart-box').forEach(function(el) {
+      if (chartInstances['pie'] || chartInstances['line'] || chartInstances['bar']) {
+        el.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:#999;font-size:0.9rem;text-align:center;padding:20px;">📝 暂无数据<br><span style="font-size:0.8rem;color:#bbb;">请先添加收支记录</span></div>';
+      }
+    });
+    Object.values(chartInstances).forEach(function(c) {
+      if (c) c.dispose();
+    });
+    chartInstances = {};
+    return;
+  }
+
+  // 如果图表实例存在，更新数据；否则重新初始化
+  if (chartInstances['pie']) {
+    updatePieChart(records);
+    updateLineChart(records);
+    updateBarChart(records);
+  } else {
+    initPieChart(records);
+    initLineChart(records);
+    initBarChart(records);
+  }
 }
 
 /** 图表1：收支分类饼图 */
@@ -79,21 +132,30 @@ function initPieChart(records) {
     return { name: entry[0], value: Math.round(entry[1] * 100) / 100 };
   });
 
+  var isMobile = window.innerWidth <= 767;
+  var chartHeight = getChartHeight();
+  var centerY = isMobile ? '40%' : '46%';
+  var fontSize = isMobile ? 10 : 12;
+
   var option = {
     tooltip: {
       trigger: 'item',
       formatter: '{b}: ¥{c} ({d}%)'
     },
     legend: {
-      bottom: 10,
-      type: 'scroll'
+      bottom: 0,
+      type: 'scroll',
+      textStyle: { fontSize: isMobile ? 10 : 12 },
+      itemWidth: isMobile ? 10 : 14,
+      itemHeight: isMobile ? 10 : 14,
+      itemGap: isMobile ? 6 : 12
     },
     color: ['#4285f4', '#34a853', '#00bcd4', '#66bb6a', '#ffa726', '#ef5350', '#ab47bc', '#78909c'],
     series: [{
       name: '支出分类',
       type: 'pie',
-      radius: ['45%', '70%'],
-      center: ['50%', '46%'],
+      radius: isMobile ? ['40%', '62%'] : ['45%', '70%'],
+      center: ['50%', centerY],
       avoidLabelOverlap: true,
       itemStyle: {
         borderRadius: 4,
@@ -102,12 +164,19 @@ function initPieChart(records) {
       },
       label: {
         show: true,
-        formatter: '{b}\n{d}%'
+        fontSize: fontSize,
+        formatter: function(p) {
+          // 移动端标签截断，防止显示不全
+          var name = p.name;
+          if (isMobile && name.length > 2) name = name.slice(0, 2) + '..';
+          return name + '\n' + p.percent + '%';
+        },
+        lineHeight: 16
       },
       emphasis: {
         label: {
           show: true,
-          fontSize: 16,
+          fontSize: isMobile ? 12 : 16,
           fontWeight: 'bold'
         }
       },
@@ -116,18 +185,36 @@ function initPieChart(records) {
     graphic: [{
       type: 'text',
       left: 'center',
-      top: '42%',
+      top: isMobile ? '35%' : '42%',
       style: {
         text: '支出分类占比',
         textAlign: 'center',
         fill: '#5f6368',
-        fontSize: 13,
+        fontSize: isMobile ? 11 : 13,
         fontWeight: 'normal'
       }
     }]
   };
 
   chart.setOption(option);
+}
+
+/** 更新饼图数据 */
+function updatePieChart(records) {
+  var chart = chartInstances['pie'];
+  if (!chart) return;
+
+  var categoryMap = {};
+  records.filter(function (r) { return r.type === 'expense'; }).forEach(function (r) {
+    if (!categoryMap[r.category]) categoryMap[r.category] = 0;
+    categoryMap[r.category] += r.amount;
+  });
+
+  var data = Object.entries(categoryMap).map(function (entry) {
+    return { name: entry[0], value: Math.round(entry[1] * 100) / 100 };
+  });
+
+  chart.setOption({ series: [{ data: data }] });
 }
 
 /** 图表2：月度收支趋势折线图 */
@@ -155,7 +242,7 @@ function initLineChart(records) {
   var incomeData = months.map(function (m) { return Math.round(monthlyData[m].income); });
   var expenseData = months.map(function (m) { return Math.round(monthlyData[m].expense); });
 
-  // 找超支月份（4月）
+  // 找超支月份
   var overMonthIndex = -1;
   months.forEach(function (m, i) {
     if (monthlyData[m].expense > monthlyData[m].income * 0.6) {
@@ -178,12 +265,12 @@ function initLineChart(records) {
     },
     legend: {
       data: ['月收入', '月支出'],
-      bottom: 10
+      bottom: 0
     },
     grid: {
       left: '3%',
       right: '4%',
-      bottom: '12%',
+      bottom: '14%',
       top: '8%',
       containLabel: true
     },
@@ -249,6 +336,36 @@ function initLineChart(records) {
   chart.setOption(option);
 }
 
+/** 更新折线图数据 */
+function updateLineChart(records) {
+  var chart = chartInstances['line'];
+  if (!chart) return;
+
+  var monthlyData = {};
+  records.forEach(function (r) {
+    var month = r.date.slice(0, 7);
+    if (!monthlyData[month]) monthlyData[month] = { income: 0, expense: 0 };
+    if (r.type === 'income') {
+      monthlyData[month].income += r.amount;
+    } else {
+      monthlyData[month].expense += r.amount;
+    }
+  });
+
+  var months = Object.keys(monthlyData).sort();
+  var displayMonths = months.map(function (m) { return m.slice(5) + '月'; });
+  var incomeData = months.map(function (m) { return Math.round(monthlyData[m].income); });
+  var expenseData = months.map(function (m) { return Math.round(monthlyData[m].expense); });
+
+  chart.setOption({
+    xAxis: { data: displayMonths },
+    series: [
+      { data: incomeData },
+      { data: expenseData }
+    ]
+  });
+}
+
 /** 图表3：消费分类柱状图 */
 function initBarChart(records) {
   var dom = document.getElementById('chart-bar');
@@ -270,6 +387,8 @@ function initBarChart(records) {
   var values = categories.map(function (c) { return Math.round(categoryData[c]); });
   var avg = values.reduce(function (a, b) { return a + b; }, 0) / values.length;
 
+  var isMobile = window.innerWidth <= 767;
+
   var option = {
     tooltip: {
       trigger: 'axis',
@@ -281,13 +400,13 @@ function initBarChart(records) {
       left: '3%',
       right: '4%',
       bottom: '8%',
-      top: '8%',
+      top: '12%',
       containLabel: true
     },
     xAxis: {
       type: 'category',
       data: categories,
-      axisLabel: { rotate: 0 }
+      axisLabel: { rotate: isMobile ? 30 : 0, fontSize: isMobile ? 10 : 12 }
     },
     yAxis: {
       type: 'value',
@@ -310,7 +429,7 @@ function initBarChart(records) {
         show: true,
         position: 'top',
         formatter: '¥{c}',
-        fontSize: 11,
+        fontSize: isMobile ? 10 : 11,
         color: '#5f6368'
       },
       barWidth: '50%',
@@ -325,6 +444,38 @@ function initBarChart(records) {
   };
 
   chart.setOption(option);
+}
+
+/** 更新柱状图数据 */
+function updateBarChart(records) {
+  var chart = chartInstances['bar'];
+  if (!chart) return;
+
+  var categories = ['餐饮', '交通', '购物', '住房', '娱乐', '医疗', '教育', '其他'];
+  var categoryData = {};
+  categories.forEach(function (c) { categoryData[c] = 0; });
+  records.filter(function (r) { return r.type === 'expense'; }).forEach(function (r) {
+    if (categoryData[r.category] !== undefined) {
+      categoryData[r.category] += r.amount;
+    }
+  });
+
+  var values = categories.map(function (c) { return Math.round(categoryData[c]); });
+  var avg = values.reduce(function (a, b) { return a + b; }, 0) / values.length;
+
+  chart.setOption({
+    series: [{
+      data: values.map(function (v) {
+        return {
+          value: v,
+          itemStyle: {
+            color: v > avg ? '#ea4335' : '#1a73e8',
+            borderRadius: [6, 6, 0, 0]
+          }
+        };
+      })
+    }]
+  });
 }
 
 /** Tab 切换功能 */

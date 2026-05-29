@@ -332,6 +332,15 @@
       localStorage.removeItem('zhichaitong_category_budget');
       localStorage.removeItem('zhichaitong_budget_total');
 
+      // 同时重置当月预算总额
+      var budgets = getBudget();
+      var month = getCurrentMonthStr();
+      var found = budgets.find(function (b) { return b.month === month; });
+      if (found) {
+        found.budget = 0;
+        saveBudget(budgets);
+      }
+
       // 清空总额输入
       var totalInput = document.getElementById('budget-total-input');
       if (totalInput) totalInput.value = '';

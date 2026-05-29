@@ -962,7 +962,7 @@ if (isMobile) {
     document.body.appendChild(div.firstElementChild);
 
     // 给 body 加底部间距，防止内容被导航栏遮挡
-    document.body.style.paddingBottom = '68px';
+    document.body.style.paddingBottom = '76px';
   }
 
   if (document.readyState === 'loading') {
