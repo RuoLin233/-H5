@@ -135,6 +135,13 @@
     document.addEventListener('DOMContentLoaded', function() {
       showDailyTip('#daily-tip-chart');
     });
+
+    // bfcache 恢复时刷新
+    window.addEventListener('pageshow', function(e) {
+      if (e.persisted && document.getElementById('chart-pie')) {
+        initCharts();
+      }
+    });
   </script>
   
 <script>

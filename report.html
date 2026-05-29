@@ -355,6 +355,13 @@ async function initReportPage() {
     }
 
     document.addEventListener('DOMContentLoaded', initReportPage);
+
+    // bfcache 恢复时刷新
+    window.addEventListener('pageshow', function(e) {
+      if (e.persisted) {
+        renderReport();
+      }
+    });
   </script>
 
   <!-- 注册 Service Worker -->

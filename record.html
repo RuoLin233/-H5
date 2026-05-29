@@ -275,6 +275,13 @@
       var records = getRecords().slice(0, 5);
       var container = document.getElementById('records-container');
 
+      // 无当月记录时隐藏清空按钮
+      var clearBtn = document.getElementById('btn-clear-month');
+      var currentMonthRecords = getCurrentMonthRecords();
+      if (clearBtn) {
+        clearBtn.style.display = currentMonthRecords.length === 0 ? 'none' : '';
+      }
+
       if (records.length === 0) {
         container.innerHTML = '<p style="text-align: center; color: var(--color-text-secondary); padding: 20px;">暂无记录，点击上方表单添加第一笔！</p>';
         return;
@@ -312,8 +319,8 @@
       var date = document.getElementById('record-date').value;
       var note = document.getElementById('note').value.trim();
 
-      if (!amount || amount <= 0) {
-        showToast('请输入有效金额', 'error');
+      if (isNaN(amount) || amount <= 0 || amount > 99999999) {
+        showToast('请输入有效金额（0.01 ~ 99,999,999）', 'error');
         return;
       }
       if (!date) {
@@ -373,6 +380,12 @@
       var remaining = records.filter(function(r) { return !r.date.startsWith(month); });
       var deletedCount = records.length - remaining.length;
 
+      if (deletedCount === 0) {
+        closeClearModal();
+        showToast('当月没有记录需要清空', 'info');
+        return;
+      }
+
       saveRecords(remaining);
       closeClearModal();
       showToast('已清空 ' + deletedCount + ' 条当月记录！');
@@ -390,6 +403,15 @@
         clearModal.addEventListener('click', function(e) {
           if (e.target === clearModal) closeClearModal();
         });
+      }
+    });
+
+    // bfcache 恢复时刷新数据（浏览器后退/前进）
+    window.addEventListener('pageshow', function(e) {
+      if (e.persisted) {
+        renderDailySummary();
+        renderRecentRecords();
+        document.getElementById('record-date').value = getTodayStr();
       }
     });
   </script>

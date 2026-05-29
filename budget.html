@@ -266,7 +266,10 @@
 
       tbody.innerHTML = details.map(function (d) {
         var statusCls, statusText;
-        if (d.percent >= 100) {
+        if (d.budget === 0 && d.spent === 0) {
+          statusCls = 'budget-status--normal';
+          statusText = '📝 未设置';
+        } else if (d.percent >= 100) {
           statusCls = 'budget-status--danger';
           statusText = '🚨 已超支';
         } else if (d.percent >= 80) {
@@ -278,12 +281,16 @@
         }
 
         var rowCls = '';
-        if (d.percent >= 100) rowCls = 'budget-row--danger';
-        else if (d.percent >= 80) rowCls = 'budget-row--warning';
+        if (d.budget > 0) {
+          if (d.percent >= 100) rowCls = 'budget-row--danger';
+          else if (d.percent >= 80) rowCls = 'budget-row--warning';
+        }
 
         var barCls = 'progress-bar__fill';
-        if (d.percent >= 100) barCls += ' progress-bar__fill--danger';
-        else if (d.percent >= 80) barCls += ' progress-bar__fill--warning';
+        if (d.budget > 0) {
+          if (d.percent >= 100) barCls += ' progress-bar__fill--danger';
+          else if (d.percent >= 80) barCls += ' progress-bar__fill--warning';
+        }
 
         return '<tr class="' + rowCls + '">' +
           '<td style="font-weight: 600;">' + getCategoryIcon(d.category) + ' ' + d.category + '</td>' +
@@ -421,18 +428,16 @@
       localStorage.setItem('zhichaitong_category_budget', JSON.stringify(customMap));
       localStorage.setItem('zhichaitong_budget_total', totalInputVal);
 
-      // 更新月度预算记录
-      if (finalTotal > 0) {
-        var budgets = getBudget();
-        var month = getCurrentMonthStr();
-        var found = budgets.find(function (b) { return b.month === month; });
-        if (found) {
-          found.budget = finalTotal;
-        } else {
-          budgets.push({ month: month, budget: finalTotal, actual: null });
-        }
-        saveBudget(budgets);
+      // 更新月度预算记录（包括清零的情况）
+      var budgets = getBudget();
+      var month = getCurrentMonthStr();
+      var found = budgets.find(function (b) { return b.month === month; });
+      if (found) {
+        found.budget = finalTotal;
+      } else if (finalTotal > 0) {
+        budgets.push({ month: month, budget: finalTotal, actual: null });
       }
+      saveBudget(budgets);
 
       closeBudgetModal();
       renderBudgetOverview();
@@ -448,6 +453,16 @@
       modal.addEventListener('click', function (e) {
         if (e.target === modal) closeBudgetModal();
       });
+    });
+
+    // bfcache 恢复时刷新预算数据
+    window.addEventListener('pageshow', function(e) {
+      if (e.persisted) {
+        initDefaultRecords().then(function() {
+          renderBudgetOverview();
+          renderBudgetTable();
+        });
+      }
     });
   </script>
 

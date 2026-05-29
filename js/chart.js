@@ -78,6 +78,13 @@ async function initCharts() {
   window.addEventListener('pageshow', function() {
     refreshCharts();
   });
+
+  // storage 事件：其他标签页修改了 localStorage 时自动刷新
+  window.addEventListener('storage', function(e) {
+    if (e.key === 'zhichaitong_records' || e.key === 'zhichaitong_budget') {
+      refreshCharts();
+    }
+  });
 }
 
 /** 刷新图表数据 */

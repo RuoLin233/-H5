@@ -220,7 +220,7 @@
 
   <script src="js/main.js"></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    function initIndexPage() {
       initDefaultRecords().then(function() {
         renderHomeStats();
         showDailyTip('#daily-tip-home');
@@ -252,6 +252,16 @@
         });
       }, { threshold: 0.3 });
       statEls.forEach(function(el) { observer.observe(el); });
+    }
+
+    document.addEventListener('DOMContentLoaded', initIndexPage);
+
+    // bfcache 恢复时刷新数据（浏览器后退/前进）
+    window.addEventListener('pageshow', function(e) {
+      if (e.persisted) {
+        renderHomeStats();
+        showDailyTip('#daily-tip-home');
+      }
     });
   </script>
 

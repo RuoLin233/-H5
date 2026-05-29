@@ -79,9 +79,13 @@ function formatMoney(amount, showSymbol) {
   return sym + Number(amount).toFixed(2);
 }
 
-/** 获取今天的日期字符串 YYYY-MM-DD */
+/** 获取今天的日期字符串 YYYY-MM-DD（使用本地时间，非UTC） */
 function getTodayStr() {
-  return new Date().toISOString().slice(0, 10);
+  var d = new Date();
+  var yyyy = d.getFullYear();
+  var mm = String(d.getMonth() + 1).padStart(2, '0');
+  var dd = String(d.getDate()).padStart(2, '0');
+  return yyyy + '-' + mm + '-' + dd;
 }
 
 /** 获取当前月份的字符串 YYYY-MM */
